@@ -10,4 +10,7 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 
+db.session.execute('CREATE TABLE IF NOT EXISTS user(id SERIAL PRIMARY KEY, username VARCHAR(20), email VARCHAR(120), password VARCHAR(60));')
+db.session.commit()
+
 from application import routes

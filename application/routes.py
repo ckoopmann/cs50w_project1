@@ -35,9 +35,9 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        user = User.query.filter_by(username = form.username.data).first()
-        if user and bcrypt.check_password_hash(user.password, form.password.data):
-            login_user(user, remember = form.remember.data)
+        user_data = db.session.execute("SELECT * FROM user where username = :username", {"username": form.username.data}).fetchone()
+        if user_data and bcrypt.check_password_hash(user_data.password, form.password.data):
+            login_user(User(user_data.id), remember = form.remember.data)
             return redirect(url_for('index'))
 
         flash('Login failed try again', 'warning')

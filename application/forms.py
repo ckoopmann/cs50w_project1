@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from application.models import User
+from application import db
+
 
 class RegistrationForm(FlaskForm):
     username = StringField("Username",
@@ -12,12 +13,12 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField("Register")
 
     def validate_username(self, username):
-        user = User.query.filter_by(username = username.data).first()
+        user = db.session.execute("SELECT * FROM user where username = :username", {"username": username.data}).fetchone()
         if user:
             raise ValidationError(f'Username {username.data} already exists!')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email = email.data).first()
+        user = db.session.execute("SELECT * FROM user where email = :email", {"email": email.data}).fetchone()
         if user:
             raise ValidationError(f'Email {email.data} already in use!')
 
