@@ -18,10 +18,10 @@ def registration():
 
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user = User(username = form.username.data, email = form.email.data, password = hashed_password)
-        db.session.add(user)
-        db.session.commit()
+        db.session.execute("INSERT INTO user(username, email, password) VALUES (:username, :email, :password)",
+        {"username":form.username.data, "email":form.email.data, "password":hashed_password})
         flash(f"Account has been created", "success")
+        db.session.commit()
         return redirect(url_for("login"))
 
     return render_template('registration.html', form = form, title = "Registration")
