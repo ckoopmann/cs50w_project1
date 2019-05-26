@@ -13,12 +13,12 @@ class RegistrationForm(FlaskForm):
     submit = SubmitField("Register")
 
     def validate_username(self, username):
-        user = db.session.execute("SELECT * FROM user where username = :username", {"username": username.data}).fetchone()
+        user = db.session.execute("SELECT * FROM users where username = :username", {"username": username.data}).fetchone()
         if user:
             raise ValidationError(f'Username {username.data} already exists!')
 
     def validate_email(self, email):
-        user = db.session.execute("SELECT * FROM user where email = :email", {"email": email.data}).fetchone()
+        user = db.session.execute("SELECT * FROM users where email = :email", {"email": email.data}).fetchone()
         if user:
             raise ValidationError(f'Email {email.data} already in use!')
 

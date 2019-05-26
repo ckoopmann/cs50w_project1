@@ -18,7 +18,7 @@ def registration():
 
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        db.session.execute("INSERT INTO user(username, email, password) VALUES (:username, :email, :password)",
+        db.session.execute("INSERT INTO users(username, email, password) VALUES (:username, :email, :password)",
         {"username":form.username.data, "email":form.email.data, "password":hashed_password})
         flash(f"Account has been created", "success")
         db.session.commit()
@@ -35,7 +35,7 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        user_data = db.session.execute("SELECT * FROM user where username = :username", {"username": form.username.data}).fetchone()
+        user_data = db.session.execute("SELECT * FROM users where username = :username", {"username": form.username.data}).fetchone()
         if user_data and bcrypt.check_password_hash(user_data.password, form.password.data):
             login_user(User(user_data.id), remember = form.remember.data)
             return redirect(url_for('index'))
