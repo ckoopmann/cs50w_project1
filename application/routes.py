@@ -7,10 +7,15 @@ from flask_login import login_user, current_user, logout_user
 
 @app.route("/", methods = ['GET','POST'])
 def index():
-    form = SearchForm()
+    if not current_user.is_authenticated:
+        return redirect(url_for('registration'))
 
+    form = SearchForm()
     if request.method == 'POST':
-        results = db.session.execute("SELECT * FROM books WHERE author LIKE :author", {"author":"%"+form.author.data+"%"})
+        author = "%"  if form.author.data is None else "%"+form.author.data+"%"
+        title = "%" if form.title.data is None else "%"+form.title.data+"%"
+        isbn =  "%" if form.isbn.data is None else "%"+form.isbn.data+"%"
+        results = db.session.execute("SELECT * FROM books WHERE author LIKE :author AND title LIKE :title AND isbn LIKE :isbn", {"author":author, "title":title, "isbn":isbn})
         return render_template("index.html", form = form, results =         results.fetchall())
 
     return render_template("index.html", form = form)
