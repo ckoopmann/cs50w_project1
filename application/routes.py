@@ -61,3 +61,9 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for('login'))
+
+@app.route("/book/<int:id>", methods = ['GET'])
+def book(id):
+    book = db.session.execute("SELECT * FROM books WHERE id = :id",
+    {"id":id}).fetchone()
+    return render_template('book.html', id = id, book = book)

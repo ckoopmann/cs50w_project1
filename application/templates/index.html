@@ -61,7 +61,7 @@
         <a class="mr-2" href="#">{{ result.author }}</a>
         <small class="text-muted">{{ result.year }} - {{ result.isbn}}</small>
       </div>
-      <h2><a class="article-title" href="#">{{ result.title }}</a></h2>
+      <h2><a class="article-title" href="book/{{result.id}}">{{ result.title }}</a></h2>
     </div>
     </article>
   {% endfor %}
