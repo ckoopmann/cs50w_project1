@@ -53,4 +53,11 @@
     {{form.submit(class = "btn btn-outline-info")}}
   </div>
 </form>
+{% if results %}
+  <ul>
+  {%for result in results%}
+    <li>Author: {{result.author}} Title {{result.title}}</li>
+  </ul>
+  {% endfor %}
+{% endif %}
 {% endblock %}

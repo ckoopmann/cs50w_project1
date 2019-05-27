@@ -2,11 +2,17 @@ from application import app, db, bcrypt
 from application.forms import RegistrationForm, LoginForm, SearchForm
 from flask import render_template, url_for, flash, redirect, get_flashed_messages
 from application.models import User
+from flask import request
 from flask_login import login_user, current_user, logout_user
 
 @app.route("/", methods = ['GET','POST'])
 def index():
     form = SearchForm()
+
+    if request.method == 'POST':
+        results = db.session.execute("SELECT * FROM books WHERE author LIKE :author", {"author":"%"+form.author.data+"%"})
+        return render_template("index.html", form = form, results =         results.fetchall())
+
     return render_template("index.html", form = form)
 
 @app.route("/registration", methods = ['GET','POST'])
