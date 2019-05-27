@@ -1,12 +1,13 @@
 from application import app, db, bcrypt
-from application.forms import RegistrationForm, LoginForm
+from application.forms import RegistrationForm, LoginForm, SearchForm
 from flask import render_template, url_for, flash, redirect, get_flashed_messages
 from application.models import User
 from flask_login import login_user, current_user, logout_user
 
-@app.route("/")
+@app.route("/", methods = ['GET','POST'])
 def index():
-    return render_template("index.html")
+    form = SearchForm()
+    return render_template("index.html", form = form)
 
 @app.route("/registration", methods = ['GET','POST'])
 def registration():

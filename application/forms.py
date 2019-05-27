@@ -30,3 +30,9 @@ class LoginForm(FlaskForm):
     password = PasswordField("password",validators = [DataRequired()])
     remember = BooleanField("remember me")
     submit = SubmitField("Login")
+
+class SearchForm(FlaskForm):
+    isbn = StringField("ISBN")
+    author = StringField("Author")
+    title = StringField("Title")
+    submit = SubmitField("Search")
