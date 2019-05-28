@@ -10,7 +10,19 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 login_manager = LoginManager(app)
 
-db.session.execute('CREATE TABLE IF NOT EXISTS users (id SERIAL PRIMARY KEY, username VARCHAR(20), email VARCHAR(120), password VARCHAR(60));')
+create_users_query = """CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(20),
+    email VARCHAR(120),
+    password VARCHAR(60));"""
+create_reviews_query =  """CREATE TABLE IF NOT EXISTS reviews (
+  book_id INTEGER REFERENCES books(id),
+  user_id INTEGER REFERENCES users(id),
+  rating INTEGER,
+  comment VARCHAR(500)
+);"""
+db.session.execute(create_users_query)
+db.session.execute(create_reviews_query)
 db.session.commit()
 
 from application import routes

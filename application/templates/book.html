@@ -1,5 +1,6 @@
 {% extends "layout.html"%}
 {% block content %}
+<div class="col-md-8">
 <h1>Book Id: {{id}}</h1>
 <article class="media content-section">
 <div class="media-body">
@@ -10,4 +11,43 @@
   <h2><a class="article-title" href="#">{{ book.title }}</a></h2>
 </div>
 </article>
+</div>
+<div class="col-md-4">
+  <div class="content-section">
+      <form action="" method="post">
+        {{form.hidden_tag()}}
+        <fieldset class = "form-group">
+          <legend class = "border-bottom mb-4">Review <i>{{ book.title }}</i></legend>
+          <div class="form-group">
+            {{form.rating.label(class = "form-control-label")}}
+
+            {% if form.rating.errors%}
+              {{form.rating(class = "form-control form-control-lg is-invalid")}}
+              <div class="invalid-feedback">
+                {%for error in form.rating.errors%}
+                  <span>{{error}}</span>
+                {% endfor %}
+              </div>
+            {% else %}
+            {{form.rating(class = "form-control form-control-lg")}}
+            {% endif %}
+          </div>
+
+          <div class="form-group">
+            {{form.comment.label(class = "form-control-label")}}
+
+            {% if form.comment.errors%}
+              {{form.comment(class = "form-control form-control-lg is-invalid")}}
+              <div class="invalid-feedback">
+                {%for error in form.comment.errors%}
+                  <span>{{error}}</span>
+                {% endfor %}
+              </div>
+              {% else %}
+              {{form.comment(class = "form-control form-control-lg")}}
+              {% endif %}
+          </div>
+
+  </div>
+</div>
 {% endblock %}

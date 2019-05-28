@@ -1,5 +1,5 @@
 from application import app, db, bcrypt
-from application.forms import RegistrationForm, LoginForm, SearchForm
+from application.forms import RegistrationForm, LoginForm, SearchForm, ReviewForm
 from flask import render_template, url_for, flash, redirect, get_flashed_messages
 from application.models import User
 from flask import request
@@ -66,4 +66,5 @@ def logout():
 def book(id):
     book = db.session.execute("SELECT * FROM books WHERE id = :id",
     {"id":id}).fetchone()
-    return render_template('book.html', id = id, book = book)
+    form = ReviewForm()
+    return render_template('book.html', id = id, book = book, form = form)

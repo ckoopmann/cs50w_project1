@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
+from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 from application import db
 
 
@@ -36,3 +36,8 @@ class SearchForm(FlaskForm):
     author = StringField("Author")
     title = StringField("Title")
     submit = SubmitField("Search")
+
+class ReviewForm(FlaskForm):
+    rating = IntegerField('Rating (0-5)', [DataRequired(), NumberRange(min=0, max=5)])
+    comment = StringField('Comment', [Length(min = 0, max = 500)])
+    submit = SubmitField("Submit")

@@ -1,5 +1,6 @@
 {% extends "layout.html"%}
 {% block content %}
+<div class="col-md-12">
 <form action="" method="post">
   {{form.hidden_tag()}}
   <fieldset class = "form-group">
@@ -66,4 +67,5 @@
     </article>
   {% endfor %}
 {% endif %}
+</div>
 {% endblock %}
