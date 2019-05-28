@@ -62,9 +62,15 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-@app.route("/book/<int:id>", methods = ['GET'])
+@app.route("/book/<int:id>", methods = ['GET','POST'])
 def book(id):
     book = db.session.execute("SELECT * FROM books WHERE id = :id",
     {"id":id}).fetchone()
     form = ReviewForm()
+
+    if form.validate_on_submit():
+        db.session.execute("INSERT INTO reviews(user_id, book_id, rating, comment) VALUES (:user_id, :book_id, :rating, :comment)",
+        {"user_id":current_user.get_id(), "book_id":id, "rating":form.rating.data, "comment":form.comment.data})
+        db.session.commit()
+
     return render_template('book.html', id = id, book = book, form = form)

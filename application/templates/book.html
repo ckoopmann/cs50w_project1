@@ -1,7 +1,6 @@
 {% extends "layout.html"%}
 {% block content %}
 <div class="col-md-8">
-<h1>Book Id: {{id}}</h1>
 <article class="media content-section">
 <div class="media-body">
   <div class="article-metadata">
@@ -46,6 +45,10 @@
               {% else %}
               {{form.comment(class = "form-control form-control-lg")}}
               {% endif %}
+          </div>
+
+          <div class="form-group">
+            {{form.submit(class = "btn btn-outline-info")}}
           </div>
 
   </div>
