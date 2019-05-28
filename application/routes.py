@@ -68,6 +68,8 @@ def book(id):
     {"id":id}).fetchone()
     form = ReviewForm()
 
+    form.set_id(id)
+
     if form.validate_on_submit():
         db.session.execute("INSERT INTO reviews(user_id, book_id, rating, comment) VALUES (:user_id, :book_id, :rating, :comment)",
         {"user_id":current_user.get_id(), "book_id":id, "rating":form.rating.data, "comment":form.comment.data})

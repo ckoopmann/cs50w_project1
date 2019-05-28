@@ -19,7 +19,8 @@ create_reviews_query =  """CREATE TABLE IF NOT EXISTS reviews (
   book_id INTEGER REFERENCES books(id),
   user_id INTEGER REFERENCES users(id),
   rating INTEGER,
-  comment VARCHAR(500)
+  comment VARCHAR(500),
+  PRIMARY KEY(book_id, user_id)
 );"""
 db.session.execute(create_users_query)
 db.session.execute(create_reviews_query)

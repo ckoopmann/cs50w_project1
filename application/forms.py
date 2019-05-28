@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_login import current_user
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError, NumberRange
 from application import db
@@ -39,5 +40,13 @@ class SearchForm(FlaskForm):
 
 class ReviewForm(FlaskForm):
     rating = IntegerField('Rating (0-5)', [DataRequired(), NumberRange(min=0, max=5)])
-    comment = StringField('Comment', [Length(min = 0, max = 500)])
+    comment = StringField('Comment', [DataRequired(), Length(min = 0, max = 500)])
     submit = SubmitField("Submit")
+
+    def set_id(self,id):
+        self.book_id = id
+
+    def validate_comment(self, comment):
+        user = db.session.execute("SELECT * FROM reviews where user_id =  :user_id AND book_id = :book_id", {"user_id": current_user.get_id(), "book_id":self.book_id}).fetchone()
+        if user:
+            raise ValidationError(f'You already submitted a review for this book')
