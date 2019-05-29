@@ -75,7 +75,7 @@ def book(id):
         {"user_id":current_user.get_id(), "book_id":id, "rating":form.rating.data, "comment":form.comment.data})
         db.session.commit()
 
-    reviews = db.session.execute("SELECT * FROM reviews WHERE book_id = :book_id", {"book_id":id})
+    reviews = db.session.execute("SELECT * FROM reviews JOIN users ON reviews.user_id = users.id WHERE book_id = :book_id", {"book_id":id})
 
 
     return render_template('book.html', id = id, book = book, form = form, reviews = reviews.fetchall())

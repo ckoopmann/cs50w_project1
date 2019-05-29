@@ -15,8 +15,17 @@
       <article class="media content-section">
         <div class="media-body">
           <div class="article-metadata">
-            <a class="mr-2" href="#">{{ review.rating}}</a>
-            <small class="text-muted">{{ review.comment }}</small>
+            {% for number in range(5)%}
+              {% if number < review.rating %}
+                <span class="fa fa-star checked"></span>
+              {% else %}
+                <span class="fa fa-star"></span>
+              {% endif %}
+            {% endfor %}
+            <small class="text-muted">{{ review.username }}</small>
+          </div>
+          <div class="article-content">
+            <p><i>"{{ review.comment }}"</i></p>
           </div>
         </div>
       </article>
