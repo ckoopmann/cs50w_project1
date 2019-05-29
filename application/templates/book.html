@@ -5,7 +5,12 @@
   <div class="media-body">
     <div class="article-metadata">
       <a class="mr-2" href="#">{{ book.author }}</a>
-      <small class="text-muted">{{ book.year }} - {{ book.isbn}}</small>
+      <small class="text-muted"> Publication: {{ book.year }} -  ISBN: {{ book.isbn}} - Goodreads Rating:
+            {% if goodreads %}
+            {{goodreads}}
+            {% else %}
+            Not Available
+            {% endif %}</small>
     </div>
     <h2><a class="article-title" href="#">{{ book.title }}</a></h2>
   </div>
@@ -22,7 +27,7 @@
                 <span class="fa fa-star"></span>
               {% endif %}
             {% endfor %}
-            <small class="text-muted">{{ review.username }}</small>
+            <small class="text-muted">User: {{ review.username }}</small>
           </div>
           <div class="article-content">
             <p><i>"{{ review.comment }}"</i></p>

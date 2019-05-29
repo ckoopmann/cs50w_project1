@@ -4,6 +4,7 @@ from flask import render_template, url_for, flash, redirect, get_flashed_message
 from application.models import User
 from flask import request
 from flask_login import login_user, current_user, logout_user
+import requests
 
 @app.route("/", methods = ['GET','POST'])
 def index():
@@ -75,7 +76,13 @@ def book(id):
         {"user_id":current_user.get_id(), "book_id":id, "rating":form.rating.data, "comment":form.comment.data})
         db.session.commit()
 
+    goodreads = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "5eOT5bKjx84fcqynncVpg", "isbns": book.isbn})
+
+
+
     reviews = db.session.execute("SELECT * FROM reviews JOIN users ON reviews.user_id = users.id WHERE book_id = :book_id", {"book_id":id})
 
-
-    return render_template('book.html', id = id, book = book, form = form, reviews = reviews.fetchall())
+    if goodreads.status_code == 200:
+        return render_template('book.html', id = id, book = book, form = form, reviews = reviews.fetchall(), goodreads = goodreads.json()['books'][0]['average_rating'])
+    else:
+        return render_template('book.html', id = id, book = book, form = form, reviews = reviews.fetchall())
