@@ -1,10 +1,12 @@
 from application import app, db, bcrypt
 from application.forms import RegistrationForm, LoginForm, SearchForm, ReviewForm
-from flask import render_template, url_for, flash, redirect, get_flashed_messages
+from flask import render_template, url_for, flash, redirect, abort, get_flashed_messages
 from application.models import User
 from flask import request
 from flask_login import login_user, current_user, logout_user
+from simplejson import dumps
 import requests
+
 
 @app.route("/", methods = ['GET','POST'])
 def index():
@@ -86,3 +88,23 @@ def book(id):
         return render_template('book.html', id = id, book = book, form = form, reviews = reviews.fetchall(), goodreads = goodreads.json()['books'][0]['average_rating'])
     else:
         return render_template('book.html', id = id, book = book, form = form, reviews = reviews.fetchall())
+
+@app.route("/api/<isbn>", methods = ['GET'])
+def api(isbn):
+    book = db.session.execute("""SELECT books.id, books.author, books.title, books.year, books.isbn, AVG(reviews.rating) AS average_score,
+    COUNT(reviews.*) AS review_count
+    FROM books
+    LEFT JOIN reviews ON books.id = reviews.book_id
+    WHERE isbn = :isbn
+    GROUP BY books.id, books.author, books.title, books.year, books.isbn
+    """,
+    {"isbn":isbn}).fetchone()
+    if book is not None:
+        return dumps({'title':book.title,
+        'author':book.author,
+        'year':book.year,
+        'isbn':book.isbn,
+        'review_count':book.review_count,
+        'avg_score':book.average_score})
+    else:
+        return abort(404)

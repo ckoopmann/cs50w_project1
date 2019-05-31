@@ -1,4 +1,10 @@
 Flask
 Flask-Session
+Flask-Login
+Flask-SQLAlchemy
+Flask-Bcrypt
+Flask-Wtf
+requests
 psycopg2
+simplejson
 SQLAlchemy
